@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:16  # Change this line to use Node.js 16 or higher
+    container_name: nestjs-app
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: npm run start:dev
+    environment:
+      MONGO_URI: 'your-mongodb-uri'
+      RABBITMQ_URI: 'amqp://guest:guest@rabbitmq:5672'
+    depends_on:
+      - rabbitmq
+    ports:
+      - "3000:3000"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
