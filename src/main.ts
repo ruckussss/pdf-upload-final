@@ -11,8 +11,12 @@ async function bootstrap() {
   // Enable CORS if the front-end is on a different origin
   app.enableCors();
 
-  await app.listen(3000);
-  console.log('Application is running on: http://localhost:3000');
+  // Use the PORT environment variable, or default to 3000
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  
+  console.log(`Application is running on: http://localhost:${port}`);
   console.log('RabbitMQ URI:', process.env.RABBITMQ_URI);
 }
+
 bootstrap();
