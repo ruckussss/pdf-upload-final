@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { FileUploadController } from './file-upload.controller';
-import { FileUploadService } from './file-upload.service';
-import { MulterModule } from '@nestjs/platform-express';
+import { FileUploadModule } from './file-upload/file-upload.module';
+import { ConfigModule } from './config/config.module';
+import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
+import { MongoModule } from './mongo/mongo.module';
 
 @Module({
   imports: [
-    MulterModule.register({
-      dest: './uploads',
-    }),
+    ConfigModule,
+    FileUploadModule,
+    RabbitMQModule,
+    MongoModule,
   ],
-  controllers: [FileUploadController],
-  providers: [FileUploadService],
 })
 export class AppModule {}

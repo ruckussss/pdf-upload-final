@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(FileUploadModule);
 
   // Set up validation globally (if needed)
   app.useGlobalPipes(new ValidationPipe());
