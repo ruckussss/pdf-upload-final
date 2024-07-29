@@ -9,7 +9,7 @@ services:
       - .:/app
     command: npm run start:dev
     environment:
-      MONGO_URI: 'your-mongodb-uri'
+      MONGO_URI: 'mongodb+srv://venwiz-mvp-dev2:WtsVS0f4clVFtGIk@cluster2.vs2kj.mongodb.net/vendor-profile?retryWrites=true&w=majority'
       RABBITMQ_URI: 'amqp://guest:guest@rabbitmq:5672'
     depends_on:
       - rabbitmq
