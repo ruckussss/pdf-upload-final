@@ -6,6 +6,7 @@ import * as FormData from 'form-data';
 import { ConfigService } from '../config/config.service';
 import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 import { MongoClient } from 'mongodb';
+import { Express } from 'express'; // Add this import
 
 @Injectable()
 export class FileUploadService {
@@ -43,21 +44,30 @@ export class FileUploadService {
       const fileUrl = response.data[0].fileUrl;
 
       // Save file information to MongoDB
-      // await this.saveFileData(id, fileUrl, parameter1, parameter2);
+      await this.saveFileData(id, fileUrl, parameter1, parameter2);
 
       // Publish the message to RabbitMQ
       await this.rabbitmqService.sendMessage('file_uploaded', { id, fileUrl, parameter1, parameter2 });
 
-      return { fileUrl };
+      return {message: 'Recieved files and send to RabbitMQ'};
     } catch (error) {
       console.error('Error during file upload:', error);
       throw error;
     }
   }
 
+  async handleResults(id: string, fileUrl: string, parameter1: string, parameter2: string) {
+    try {
+      return { message: 'Results successfully sent to retool' };
+    } catch (error) {
+      console.error('Error handling results:', error);
+      throw error;
+    }
+  }
+
   private async saveFileData(id: string, fileUrl: string, parameter1: string, parameter2: string) {
-    const database = this.mongoClient.db('yourDatabaseName'); // Replace with your database name
-    const collection = database.collection('uploads'); // Replace with your collection name
+    const database = this.mongoClient.db('vendor-profile'); // Replace with your database name
+    const collection = database.collection('pdf-app'); // Replace with your collection name
 
     const document = { id, fileUrl, parameter1, parameter2, createdAt: new Date() };
     await collection.insertOne(document);
